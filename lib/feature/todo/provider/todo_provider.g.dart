@@ -22,7 +22,7 @@ final testFunctionProvider = AutoDisposeProvider<void Function()>.internal(
 );
 
 typedef TestFunctionRef = AutoDisposeProviderRef<void Function()>;
-String _$todoReferenceHash() => r'dc98e5169d12ca171a7ac63b65b828a166f695bc';
+String _$todoReferenceHash() => r'2737131119925253455b6f64dc31e9f06d5316bf';
 
 /// See also [todoReference].
 @ProviderFor(todoReference)
@@ -38,7 +38,7 @@ final todoReferenceProvider =
 );
 
 typedef TodoReferenceRef = AutoDisposeProviderRef<CollectionReference<ToDo?>>;
-String _$todosHash() => r'9b975c1efcbb72bf13bf18c2d9ff90f7f73aa913';
+String _$todosHash() => r'aa3f25b7d2c349e049a3a7c6763bf9405651a103';
 
 /// See also [todos].
 @ProviderFor(todos)
@@ -52,7 +52,7 @@ final todosProvider = AutoDisposeStreamProvider<List<ToDo>>.internal(
 );
 
 typedef TodosRef = AutoDisposeStreamProviderRef<List<ToDo>>;
-String _$todoControllerHash() => r'4d3753689aa6cffa063fc73828dc808ce3997cbe';
+String _$todoControllerHash() => r'e121b6f7f41498fdb0c403244c5bdf37d57a16f2';
 
 /// TODO③：完了状態になっているTodoインスタンスはすべて下にまとまるように順番を変更するProviderを作ってみよう
 /// todosProviderを使ってやれば簡単にできそうだね。

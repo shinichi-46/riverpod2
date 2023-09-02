@@ -17,7 +17,7 @@ void main() async {
     ProviderScope(
       overrides: [
         /// ここに表示させたいPageのpathを指定
-        initialLocationProvider.overrideWithValue(CounterPage.path),
+        initialLocationProvider.overrideWithValue(ToDoPage.path),
       ],
       child: const MyApp(),
     ),

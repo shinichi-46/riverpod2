@@ -31,9 +31,13 @@ CollectionReference<ToDo?> todoReference(TodoReferenceRef ref) {
     /// 読み取るときの；Map<String,dynamic> から ClassA
     fromFirestore: (ds, _) {
       final data = ds.data();
+      final id = ds.id;
+
       if (data == null) {
         return null;
       }
+
+      data['id'] = id;
       return ToDo.fromJson(data);
     },
 
@@ -52,11 +56,43 @@ Stream<List<ToDo>> todos(TodosRef ref) {
   return ref
       .watch(todoReferenceProvider)
       .orderBy('updatedAt', descending: true)
+  // .orderBy('isCompleted', descending: false)
       .snapshots()
       .map(
-        (event) => event.docs.map((e) => e.data()).nonNulls.toList(),
-      );
+    // (event) => event.docs.map((e) => e.data()).nonNulls.toList(),
+    // isCompletedがtrueのものfalseのものをsortする
+        (event) => event.docs
+        .map((e) => e.data())
+        .nonNulls
+        .toList()
+      ..sort((a, b) {// これはupdatedAtの降順にする
+        // これはaとbのupdatedAtを比較して、aの方が大きければ1を返す
+        if (a.isCompleted == b.isCompleted) {
+          return 0;
+        }
+        // これはaとbのupdatedAtを比較して、aの方が大きければ1を返す
+        if (a.isCompleted) {
+          return 1;
+        }
+        // これはaとbのupdatedAtを比較して、aの方が小さければ-1を返す
+        return -1;
+      }),
+  );
 }
+
+// @riverpod
+// Stream<List<ToDo>> todos(TodosRef ref) {
+//   /// コメントを外してあえてエラーを起こしてみよう
+//   // throw Exception();
+//
+//   return ref
+//       .watch(todoReferenceProvider)
+//       .orderBy('updatedAt', descending: true)
+//       .snapshots()
+//       .map(
+//         (event) => event.docs.map((e) => e.data()).nonNulls.toList(),
+//       );
+// }
 
 /// TODO③：完了状態になっているTodoインスタンスはすべて下にまとまるように順番を変更するProviderを作ってみよう
 /// todosProviderを使ってやれば簡単にできそうだね。
@@ -79,4 +115,19 @@ class TodoController extends _$TodoController {
 
   /// TODO②：指定したTodoインスタンスを完了状態に変更する関数を実装してみよう
   /// TodoクラスのisCompletedプロパティをtrueに変更すればいいね
+
+  Future<void> toggleIsCompleted(ToDo todo) async {
+    if (state.isLoading) {
+      return;
+    }
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      await ref.read(todoReferenceProvider).doc(todo.id).set(
+        todo.copyWith(
+          isCompleted: !todo.isCompleted,
+        ),
+      );
+    });
+  }
+
 }
