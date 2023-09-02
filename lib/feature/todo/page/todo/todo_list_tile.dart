@@ -24,6 +24,5 @@ class TodoListTile extends ConsumerWidget {
         },
       ),
     );
-
   }
 }

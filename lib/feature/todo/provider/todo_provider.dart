@@ -116,6 +116,7 @@ class TodoController extends _$TodoController {
   /// TODO②：指定したTodoインスタンスを完了状態に変更する関数を実装してみよう
   /// TodoクラスのisCompletedプロパティをtrueに変更すればいいね
 
+  /// [チェックボックスの切り替えのメソッド]
   Future<void> toggleIsCompleted(ToDo todo) async {
     if (state.isLoading) {
       return;
